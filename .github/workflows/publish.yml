@@ -13,8 +13,8 @@ jobs:
     runs-on: macos-latest
 
     env:
-      PODSPEC: SampleSDK.podspec
-      XCFRAMEWORK: SampleSDK.xcframework
+      PODSPEC: VKASampleSDK.podspec
+      XCFRAMEWORK: VKASampleSDK.xcframework
 
     steps:
       ############################################################
