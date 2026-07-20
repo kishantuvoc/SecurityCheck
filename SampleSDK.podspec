@@ -4,10 +4,10 @@ Pod::Spec.new do |s|
   s.summary          = 'A high-performance iOS Adapter for delivering intelligent and optimized ads.'
 
   s.description      = <<-DESC
-  TapMindAdapter is a lightweight and scalable iOS advertising Adapter designed to deliver high-quality, optimized advertisements. It helps developers monetize their applications efficiently while maintaining a smooth and engaging user experience.
+    SampleSDK is a lightweight and scalable iOS advertising Adapter designed to deliver high-quality, optimized advertisements. It helps developers monetize their applications efficiently while maintaining a smooth and engaging user experience.
   DESC
 
-  s.homepage         = 'https://github.com/tapmind-tech/TapMind-Custom-Adapter'
+  s.homepage         = 'https://github.com/kishantuvoc/SecurityCheck'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Kishan Italiya' => 'kishan.italiya@tovoc.com' }
 
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.swift_version    = '5.0'
 
   s.source           = {
-    :git => 'https://github.com/tapmind-tech/TapMind-Custom-Adapter.git',
+    :git => 'https://github.com/kishantuvoc/SecurityCheck.git',
     :tag => s.version.to_s
   }
 s.vendored_frameworks = 'SampleSDK.xcframework'
