@@ -1,0 +1,97 @@
+name: Verify & Publish CocoaPod
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  publish:
+    runs-on: macos-latest
+
+    env:
+      PODSPEC: TapMindAdapter.podspec
+      XCFRAMEWORK: TapMindAdapter.xcframework
+
+    steps:
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Verify CocoaPods is available
+      - name: Verify CocoaPods
+        run: pod --version
+
+      # Initialize CodeQL
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: cpp, swift
+
+      # Analyze CodeQL
+      - name: Analyze CodeQL
+        uses: github/codeql-action/analyze@v3
+
+      # Scan for Secrets
+      - name: Scan Repository for Secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: .
+
+      # Check for Dangerous Commands
+      - name: Check Dangerous Commands
+        run: |
+          grep -R -E "curl.+\|.+sh|wget.+\|.+sh|base64.+\|.+sh|eval\s*\(|bash\s*<\(" . \
+            --exclude-dir=.git \
+            --exclude="README.md" && {
+              echo "Potentially dangerous command detected."
+              exit 1
+            } || true
+
+      # Verify XCFramework Exists
+      - name: Verify XCFramework
+        run: |
+          if [ ! -d "$XCFRAMEWORK" ]; then
+            echo "XCFramework not found."
+            exit 1
+          fi
+
+      # Validate Podspec
+      - name: Validate Podspec
+        run: |
+          pod spec lint "$PODSPEC" --allow-warnings --verbose
+
+      # Verify Podspec Version Matches Git Tag
+      - name: Verify Version
+        run: |
+          POD_VERSION=$(ruby -e "spec = Pod::Specification.from_file('$PODSPEC'); puts spec.version")
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+
+          echo "Podspec Version : $POD_VERSION"
+          echo "Git Tag Version : $TAG_VERSION"
+
+          if [ "$POD_VERSION" != "$TAG_VERSION" ]; then
+            echo "Version mismatch."
+            exit 1
+          fi
+
+      # Configure CocoaPods Authentication
+      - name: Configure CocoaPods
+        run: |
+          mkdir -p ~/.cocoapods
+
+          cat > ~/.cocoapods/trunk.cocoapods.org.yml <<EOF
+          ---
+          token: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          EOF
+
+      # Publish CocoaPod
+      - name: Publish CocoaPod
+        run: |
+          pod trunk push "$PODSPEC" \
+            --allow-warnings \
+            --verbose
