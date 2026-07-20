@@ -3,14 +3,13 @@ name: Verify & Publish CocoaPod
 on:
   push:
     tags:
-      - '*.*.*'        # 1.0.0, 1.0.1, 2.5.10, etc.
+      - '*.*.*' # 1.0.0, 1.0.1, 2.5.10, etc.
 
 permissions:
   contents: read
 
 jobs:
   publish:
-
     runs-on: macos-latest
 
     env:
@@ -18,125 +17,119 @@ jobs:
       XCFRAMEWORK: SampleSDK.xcframework
 
     steps:
+      ############################################################
+      # Checkout
+      ############################################################
 
-    ############################################################
-    # Checkout
-    ############################################################
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      ############################################################
+      # Verify CocoaPods
+      ############################################################
 
-    ############################################################
-    # Verify CocoaPods
-    ############################################################
+      - name: Verify CocoaPods Installation
+        run: |
+          echo "CocoaPods Version:"
+          pod --version
 
-    - name: Verify CocoaPods Installation
-      run: |
-        echo "CocoaPods Version:"
-        pod --version
+      ############################################################
+      # Secret Scan
+      ############################################################
 
-    ############################################################
-    # Secret Scan
-    ############################################################
+      - name: Scan Repository For Secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: .
 
-    - name: Scan Repository For Secrets
-      uses: trufflesecurity/trufflehog@main
-      with:
-        path: .
+      ############################################################
+      # Scan For Dangerous Commands
+      ############################################################
 
-    ############################################################
-    # Scan For Dangerous Commands
-    ############################################################
+      - name: Scan Repository For Dangerous Commands
+        shell: bash
+        run: |
+          echo "Scanning repository..."
 
-    - name: Scan For Dangerous Commands
-      run: |
+          if git ls-files \
+            | grep -v '^.github/' \
+            | xargs -r grep -nE 'curl.*\|.*sh|wget.*\|.*sh|bash <\(|eval[[:space:]]*\$\(|base64.*\|.*sh|xxd'
+          then
+            echo "❌ Dangerous commands found."
+            exit 1
+          fi
 
-        echo "Scanning repository..."
+          echo "✅ No dangerous commands found."
 
-        ! grep -R "curl.*|.*sh" . || exit 1
-        ! grep -R "wget.*|.*sh" . || exit 1
-        ! grep -R "bash <(" . || exit 1
-        ! grep -R "eval\s*\$(" . || exit 1
-        ! grep -R "base64.*|.*sh" . || exit 1
-        ! grep -R "xxd" . || exit 1
+      ############################################################
+      # Verify XCFramework Exists
+      ############################################################
 
-        echo "No dangerous commands found."
+      - name: Verify XCFramework
+        run: |
+          if [ ! -d "$XCFRAMEWORK" ]; then
+            echo "XCFramework not found."
+            exit 1
+          fi
 
-    ############################################################
-    # Verify XCFramework Exists
-    ############################################################
+          echo "XCFramework Found."
 
-    - name: Verify XCFramework
-      run: |
+      ############################################################
+      # Validate Podspec
+      ############################################################
 
-        if [ ! -d "$XCFRAMEWORK" ]; then
-          echo "XCFramework not found."
-          exit 1
-        fi
+      - name: Validate Podspec
+        run: |
+          pod spec lint "$PODSPEC" \
+            --allow-warnings \
+            --verbose
 
-        echo "XCFramework Found."
+      ############################################################
+      # Verify Tag == Podspec Version
+      ############################################################
 
-    ############################################################
-    # Validate Podspec
-    ############################################################
+      - name: Verify Version
+        run: |
+          POD_VERSION=$(ruby -e "spec = Pod::Specification.from_file('$PODSPEC'); puts spec.version")
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
 
-    - name: Validate Podspec
-      run: |
+          echo "Podspec Version : $POD_VERSION"
+          echo "Git Tag Version : $TAG_VERSION"
 
-        pod spec lint $PODSPEC \
-          --allow-warnings \
-          --verbose
+          if [ "$POD_VERSION" != "$TAG_VERSION" ]; then
+            echo "Version mismatch!"
+            exit 1
+          fi
 
-    ############################################################
-    # Verify Tag == Podspec Version
-    ############################################################
+          echo "Version Verified."
 
-    - name: Verify Version
-      run: |
+      ############################################################
+      # Configure CocoaPods Token
+      ############################################################
 
-        POD_VERSION=$(ruby -e "spec = Pod::Specification.from_file('$PODSPEC'); puts spec.version")
+      - name: Configure CocoaPods Authentication
+        run: |
+          mkdir -p ~/.cocoapods
 
-        TAG_VERSION=${GITHUB_REF#refs/tags/}
+          cat > ~/.cocoapods/trunk.cocoapods.org.yml <<EOF
+          ---
+          token: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          EOF
 
-        echo "Podspec Version : $POD_VERSION"
-        echo "Git Tag Version : $TAG_VERSION"
+      ############################################################
+      # Publish Pod
+      ############################################################
 
-        if [ "$POD_VERSION" != "$TAG_VERSION" ]; then
-          echo "Version mismatch!"
-          exit 1
-        fi
+      - name: Publish CocoaPod
+        run: |
+          pod trunk push "$PODSPEC" \
+            --allow-warnings \
+            --verbose
 
-        echo "Version Verified."
+      ############################################################
+      # Success
+      ############################################################
 
-    ############################################################
-    # Configure CocoaPods Token
-    ############################################################
-
-    - name: Configure CocoaPods Authentication
-      run: |
-
-        mkdir -p ~/.cocoapods
-
-        cat > ~/.cocoapods/trunk.cocoapods.org.yml <<EOF
-        ---
-        token: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        EOF
-
-    ############################################################
-    # Publish Pod
-    ############################################################
-
-    - name: Publish CocoaPod
-      run: |
-
-        pod trunk push $PODSPEC \
-          --allow-warnings \
-          --verbose
-
-    ############################################################
-    # Success
-    ############################################################
-
-    - name: Completed
-      run: |
-        echo "Successfully published CocoaPod."
+      - name: Completed
+        run: |
+          echo "Successfully published CocoaPod."
