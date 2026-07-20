@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "SampleSDK",
+    name: "VKASampleSDK",
     platforms: [
         .iOS(.v13) // The minimum iOS version your SDK supports
     ],
     products: [
         // This is what users will see when they add the package
         .library(
-            name: "SampleSDK",
-            targets: ["SampleSDKTarget"])
+            name: "VKASampleSDK",
+            targets: ["VKASampleSDKTarget"])
     ],
     dependencies: [
         // Google Mobile Ads official Swift Package
@@ -24,17 +24,17 @@ let package = Package(
     targets: [
         // 1. The actual binary framework
         .binaryTarget(
-            name: "SampleSDKBinary",
-            path: "SampleSDK.xcframework"
+            name: "VKASampleSDKBinary",
+            path: "VKASampleSDK.xcframework"
         ),
         // 2. The wrapper target that bridges your binary and Google Mobile Ads
         .target(
-            name: "SampleSDKTarget",
+            name: "VKASampleSDKTarget",
             dependencies: [
-                .target(name: "SampleSDKBinary"),
+                .target(name: "VKASampleSDKBinary"),
                 .product(name: "TapMindSDK", package: "TapMindSDK")
             ],
-            path: "Sources/SampleSDK" // Points to your physical folder
+            path: "Sources/VKASampleSDK" // Points to your physical folder
         )
     ]
 )

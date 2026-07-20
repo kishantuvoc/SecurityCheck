@@ -1,1 +1,1 @@
-# SampleSDK
+# VKASampleSDK

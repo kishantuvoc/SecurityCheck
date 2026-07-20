@@ -1,0 +1,6 @@
+framework module VKASampleSDK {
+  umbrella header "VKASampleSDK.h"
+  export *
+
+  module * { export * }
+}
