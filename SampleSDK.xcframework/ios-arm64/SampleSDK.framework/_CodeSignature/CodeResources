@@ -4,66 +4,33 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/SampleSDK.h</key>
+		<data>
+		GYCIhFO+o8640Kyr7jplXmzFCoQ=
+		</data>
 		<key>Info.plist</key>
 		<data>
 		QYAaE47EQr4rnyW5BWAGAAmN60c=
 		</data>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.abi.json</key>
+		<key>Modules/module.modulemap</key>
 		<data>
-		JzkJXLocjhb9cbowGnYtbBJSvQk=
-		</data>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
-		<data>
-		hbP2BSZMQcbAoAKiRMZPKqhPu1M=
-		</data>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
-		<data>
-		GWZQXusaCpwpXtHINLobpCA+bz0=
-		</data>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.swiftinterface</key>
-		<data>
-		hbP2BSZMQcbAoAKiRMZPKqhPu1M=
-		</data>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
-		<data>
-		iPkfWz2mHEN8ynclsB9AObYx3us=
+		WCEEy7hXyuB93b/rN72L/5tFchg=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.abi.json</key>
+		<key>Headers/SampleSDK.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			DnlJTPStAVjNkS/BBmO5QJbkb5AAMUB3zeui52I9Ctw=
+			p2zugZcMUvpZ/mtQRDemJYXx2mCpa5kjEfIIP/5AeYc=
 			</data>
 		</dict>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
+		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+546JrM+ZpZLFHSw5ayz7XrBES7esImquyXNUU6OCos=
-			</data>
-		</dict>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ZhZFbrQJooXbU4XdVIz+DByzTDZI6GE/dqFLSkLb3hU=
-			</data>
-		</dict>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.swiftinterface</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			+546JrM+ZpZLFHSw5ayz7XrBES7esImquyXNUU6OCos=
-			</data>
-		</dict>
-		<key>Modules/SampleSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Xknl0hN6ncbqDUcuavT3cYcAHegHOsv0TDfV+k6y7S0=
+			6OVQ2T+GmsOWEGV7Bip8gPdqVt+q2G0mklTsmtZqMlU=
 			</data>
 		</dict>
 	</dict>
