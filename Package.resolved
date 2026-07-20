@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "applovin-max-swift-package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AppLovin/AppLovin-MAX-Swift-Package.git",
+      "state" : {
+        "revision" : "13a8425875bfc9727338781ee02f0b549c9b7735",
+        "version" : "10.3.7"
+      }
+    },
+    {
+      "identity" : "swift-package-manager-google-mobile-ads",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+      "state" : {
+        "revision" : "4458cfaeb502801c779dbb7fbd0121d198628f52",
+        "version" : "13.1.0"
+      }
+    },
+    {
+      "identity" : "swift-package-manager-google-user-messaging-platform",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
+      "state" : {
+        "revision" : "13b248eaa73b7826f0efb1bcf455e251d65ecb1b",
+        "version" : "3.1.0"
+      }
+    },
+    {
+      "identity" : "tapmindsdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishantuvoc/TapMindSDK.git",
+      "state" : {
+        "revision" : "1d04b26ea81e0a05d9454823afd44db6961a77db",
+        "version" : "1.2.8"
+      }
+    }
+  ],
+  "version" : 2
+}
