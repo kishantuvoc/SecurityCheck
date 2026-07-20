@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SampleSDK'
-  s.version          = '1.0.1'
+  s.version          = '1.0.9'
   s.summary          = 'A high-performance iOS Adapter for delivering intelligent and optimized ads.'
 
   s.description      = <<-DESC
