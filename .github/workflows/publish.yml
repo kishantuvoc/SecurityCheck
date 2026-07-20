@@ -34,13 +34,7 @@ jobs:
 
       # Check for Dangerous Commands
       - name: Check Dangerous Commands
-        run: |
-          grep -R -E "curl.+\|.+sh|wget.+\|.+sh|base64.+\|.+sh|eval\s*\(|bash\s*<\(" . \
-            --exclude-dir=.git \
-            --exclude="README.md" && {
-              echo "Potentially dangerous command detected."
-              exit 1
-            } || true
+        run: ./scripts/security_check.sh
 
       # Verify XCFramework Exists
       - name: Verify XCFramework
