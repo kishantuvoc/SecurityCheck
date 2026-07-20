@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'VKASampleSDK'
-  s.version          = '1.0.11'
+  s.version          = '1.0.12'
   s.summary          = 'A high-performance iOS Adapter for delivering intelligent and optimized ads.'
 
   s.description      = <<-DESC
