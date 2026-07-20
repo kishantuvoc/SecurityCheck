@@ -3,7 +3,7 @@ name: Verify & Publish CocoaPod
 on:
   push:
     tags:
-      - '*.*.*' # 1.0.0, 1.0.1, 2.5.10, etc.
+      - '*.*.*'
 
 permissions:
   contents: read
@@ -110,23 +110,12 @@ jobs:
           echo "✅ Version Verified."
 
       ############################################################
-      # Configure CocoaPods Token
-      ############################################################
-
-      - name: Configure CocoaPods Authentication
-        run: |
-          mkdir -p ~/.cocoapods
-
-          cat > ~/.cocoapods/trunk.cocoapods.org.yml <<EOF
-          ---
-          token: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-          EOF
-
-      ############################################################
       # Publish Pod
       ############################################################
 
       - name: Publish CocoaPod
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
           pod trunk push "$PODSPEC" \
             --allow-warnings \
@@ -138,4 +127,4 @@ jobs:
 
       - name: Completed
         run: |
-          echo "Successfully published CocoaPod."
+          echo "✅ Successfully published CocoaPod."
